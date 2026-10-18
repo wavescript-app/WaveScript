@@ -1,0 +1,84 @@
+ReadMe
+
+WaveScript version 1.3
+Copyright Phil Lawrence 2026
+
+==WHAT IS WAVESCRIPT?==
+
+WaveScript is a small utility application, designed by a clinical neurophysiology scientist, to help other scientists and physicians create and format technical and clinical reports more quickly by streamlining parts of the reporting process.
+
+Most clinical EEG software forces users to switch between the EEG waveform data and the report window, disrupting the ability to look at the EEG while forming the typed text that describes it. One solution is dictation, commonly used by physicians, but this adds the overhead of transcription and then a later clinical check of the transcribed text, performed when the EEG is no longer a fresh memory. On-device transcription software does exist, but it is typically not available on the PC where the report will end up, and relies on the user copying files across from an external dictation device such as a phone.
+
+For scientists, dictation is often not even an option, due to the cost of the software and/or a lack of access to transcription services.
+
+WaveScript was designed to fill this gap. It can be "pinned" on top of the EEG software while reviewing, letting the user build up the report while still looking at the EEG data. Commonly used phrases can be added as word bubbles which, when selected, insert a chosen phrase, partial phrase or even a full paragraph into the report — the level of detail is entirely up to the user.
+
+Voice-to-text dictation is also available, powered by the open-source faster-whisper models originally developed by OpenAI. Three model sizes are supported: *Tiny* is small and extremely fast, suitable for even old hardware while still giving reasonable accuracy; *Small* is the recommended model, offering very accurate transcription while still running quickly on most modest PCs; *Medium* is much larger (over 1GB) and offers the highest accuracy, even with complex terminology, but may run a little slower on older hardware.
+
+Medications can be picked quickly by typing just the first two or three letters, with search and filter working across both generic and brand names. An optional dose and frequency can then be added with a couple of clicks.
+
+Reports can be generated as PDF documents, which can be customised with an institution logo and department name, or the text can simply be copied to the clipboard as plain text and pasted into your usual reporting workflow.
+
+WaveScript is written in Python using the PySide6 (Qt) framework, and developed with the help of AI coding tools under close human review and testing. 
+
+==HOW DO I INSTALL WAVESCRIPT?==
+
+First, download the application zip file for your platform (Windows or Mac).
+
+Extract the files from the zip to your preferred location.
+
+- For a lab install on a shared/communal machine, extract WaveScript somewhere all users can write to. This way, the medication list, dictation vocabulary and other lab-level settings are shared by everyone who uses that install.
+- If you only have write access to your own user account, or you are installing WaveScript for your own individual use, extract it into your own user directory instead. In this case every setting is yours alone and nothing is shared with other Windows/Mac logons.
+
+Regardless of where the application files live, WaveScript itself always stores its working data (profiles, settings, reports and dictation models) in a writable per-user application-data folder provided by the operating system — not inside the program folder — so the application keeps working even if it is installed somewhere read-only, and nothing is lost when you install an update. The table below shows what ends up shared at "lab" level versus what stays private to each individual profile:
+
+    +--------------------------------------+------------------------+------------------------+
+    | Setting / data                       | Shared install         | Per-user / per-logon   |
+    |                                      | (shared user account)  | install                |
+    +--------------------------------------+------------------------+------------------------+
+    | Medication list                      | Shared (lab-wide)      | Per user               |
+    | Demographic fields                   | Shared (lab-wide)      | Per user               |
+    | Dictation vocabulary (custom terms)  | Shared (lab-wide)      | Per user               |
+    | Report layout / branding (logo,      | Shared (lab-wide)      | Per user               |
+    | institution & department name)       |                        |                        |
+    | Technical report templates           | Shared (lab-wide)      | Per user               |
+    | (default sub-sections per role)      |                        |                        |
+    | Downloaded dictation (Whisper)       | Shared (lab-wide)      | Per user               |
+    | voice models                         |                        |                        |
+    | WaveScript profiles (name, initials, | Always per profile     | Always per profile     |
+    | role, signature, preferences)        |                        |                        |
+    | Saved / in-progress reports (*.wsr)  | Always per profile     | Always per profile     |
+    | and autosaves                        |                        |                        |
+    +--------------------------------------+------------------------+------------------------+
+
+In both cases, individual WaveScript profiles (see below) are always kept separate from one another — only the lab-wide items above are affected by whether the install itself is shared or per-user/per-logon.
+
+**Windows:** double-click WaveScript.exe to run the application. To create a shortcut, right-click the icon, choose "Create Shortcut", rename it if you like, then drag it to wherever you want to launch it from (e.g. the Taskbar).
+
+**Mac:** double-click the WaveScript application to run it. To keep it handy, drag the WaveScript icon into your Applications folder and/or onto the Dock.
+
+On first run, WaveScript creates its data folders along with a default user profile. On a machine with a shared/lab log-on, each person should create their own profile inside WaveScript. Every user can then set their own preferences, e.g. Scientist vs Physician profile, report signature, preferred technical-report sub-sections, and so on.
+
+As a report is written it is auto-saved to disk, so no data is lost if the application or operating system crashes, or there's a power loss. Reports are tied to the profile that created them, so on a shared machine you can switch to your own profile at any time, even while a colleague's report is still in progress — their work will be waiting for them when they switch back.
+
+To pause work on a report and start a new one without losing anything, save it in WaveScript's own report format (*.wsr). These are saved to your profile folder and can be reopened later to pick up where you left off.
+
+==HOW DO I USE WAVESCRIPT?==
+
+On first run you'll be shown a Quick Start guide — take a few minutes to read through it, as it explains the basic operation of the program. You can return to it at any time via the "?" icon at the top of the application.
+
+If you want to use voice-to-text dictation, install a voice model first. Click the cog icon to open the configuration screen and go to the "Dictation" tab.
+
+Download your preferred model — *Tiny*, *Small* (recommended) or *Medium* — from huggingface.com. Download all of the files for that model into a single folder (e.g. ~\whisper\ containing config.json, model.bin, tokenizer.json and vocabulary.txt). It's recommended to use the English-only version of each model rather than the multilingual version — they are both smaller and more accurate for English.
+
+In WaveScript, click "Import" next to the model size you downloaded, and point the file chooser at the folder containing those files. It may take a few seconds for WaveScript to copy the files into its own resource folder; you'll get a confirmation once this is done. Then select the "Use this model" radio button, and voice-to-text dictation will be enabled wherever you see a microphone icon.
+
+WaveScript is designed to be as flexible as possible. Some users may only want to use a few sections of the application to generate text for pasting into their own reporting workflow, while others will prefer the full report-building and PDF export capability — both are fully supported.
+
+An End User Licence Agreement (EULA) is bundled with the application and can be read at any time from the "?" menu under "Licence (EULA)...". Please take a moment to review it before using WaveScript.
+
+==CAN I SUGGEST A FEATURE OR GIVE FEEDBACK?==
+
+Feedback is very welcome, and can be sent by e-mail to phil208@pm.me. If there's a specific feature you'd like to see, or you'd prefer an existing feature to behave differently, all suggestions will be considered. Please bear in mind that this application is developed in my spare time and at my own cost, so no guarantee can be given about future development.
+
+If you find WaveScript useful and would like to make a donation, please follow the link in the app under the "?" menu — it would be greatly appreciated.
